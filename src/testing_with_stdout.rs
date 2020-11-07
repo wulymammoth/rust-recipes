@@ -40,27 +40,28 @@ fn test_mutable_reference() {
 //#[test]
 //#[ignore]
 //fn test_mutable_reference_in_more_than_one_place() {
-    //let mut out = Vec::new();
+//let mut out = Vec::new();
 
-    //// will not compile because we can't take two mutable refs to the same vector
-    //// * we can def do this in another scope, but that's not the functionality we want or what we
-    //// want to test
-    //let mut logger1 = Logger::new(&mut out);
-    //let mut logger2 = Logger::new(&mut out); // can't take two mutable refs to the same vector
+//// will not compile because we can't take two mutable refs to the same vector
+//// * we can def do this in another scope, but that's not the functionality we want or what we
+//// want to test
+//let mut logger1 = Logger::new(&mut out);
+//let mut logger2 = Logger::new(&mut out); // can't take two mutable refs to the same vector
 
-    //logger1.log("one");
-    //logger2.log("two");
-    //logger1.log("three");
+//logger1.log("one");
+//logger2.log("two");
+//logger1.log("three");
 
-    //logger1.flush();
-    //logger2.flush();
+//logger1.flush();
+//logger2.flush();
 
-    //assert_eq!(String::from_utf8(out).unwrap(), "one\ntwo\nthree\n");
+//assert_eq!(String::from_utf8(out).unwrap(), "one\ntwo\nthree\n");
 //}
 
 /// ROBUST STUBBING
-use std::rc::Rc;
+
 use std::cell::RefCell;
+use std::rc::Rc;
 
 #[derive(Clone)]
 struct TestWriter {
@@ -70,7 +71,9 @@ struct TestWriter {
 impl TestWriter {
     // creating a new `TestWriter` just means packaging an empty `Vec` in all the wrappers
     fn new() -> Self {
-        TestWriter { storage: Rc::new(RefCell::new(Vec::new())) }
+        TestWriter {
+            storage: Rc::new(RefCell::new(Vec::new())),
+        }
     }
 
     // once we are done writing to the buffer, we can take it (vector) out of the `Rc` and the
@@ -118,4 +121,41 @@ fn test_cloneable_writer() {
     assert_eq!(out.into_string(), "one\ntwo\nthree\n");
 }
 
-// thread-safe loggers
+// TODO: finish
+//use std::sync::{Arc, Mutex};
+
+//// thread-safe
+//struct FauxOut {
+    //storage: Arc<Mutex<Vec<u8>>>,
+//}
+
+//impl FauxOut {
+    //// creating a new `TestWriter` just means packaging an empty `Vec` in all the wrappers
+    //fn new() -> Self {
+        //Self {
+            //storage: Arc::new(Mutex::new(Vec::new())),
+        //}
+    //}
+
+    //// once we are done writing to the buffer, we can take it (vector) out of the `Rc` and the
+    //// `RefCell` and inspect its contents
+    //fn into_inner(self) -> Vec<u8> {
+        //Rc::try_unwrap(self.storage).unwrap().into_inner()
+    //}
+
+    //// it's easier to compare strings instead of byte vectors
+    //fn into_string(self) -> String {
+        //let bytes = self.into_inner();
+        //String::from_utf8(bytes).unwrap()
+    //}
+//}
+
+//impl Write for FauxOut {
+    //fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        //self.storage.borrow_mut().write(buf)
+    //}
+
+    //fn flush(&mut self) -> std::io::Result<()> {
+        //self.storage.borrow_mut().flush()
+    //}
+//}
