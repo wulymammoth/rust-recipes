@@ -1,9 +1,11 @@
 use std::io::Write;
 
+#[allow(dead_code)]
 pub struct Logger<T: Write> {
     out: T,
 }
 
+#[allow(dead_code)]
 impl<T: Write> Logger<T> {
     pub fn new(out: T) -> Self {
         Logger { out }
@@ -68,6 +70,7 @@ struct TestWriter {
     storage: Rc<RefCell<Vec<u8>>>,
 }
 
+#[allow(dead_code)]
 impl TestWriter {
     // creating a new `TestWriter` just means packaging an empty `Vec` in all the wrappers
     fn new() -> Self {
