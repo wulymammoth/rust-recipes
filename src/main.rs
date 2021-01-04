@@ -3,6 +3,7 @@ mod buffered_writes;
 mod progress_bar;
 mod string_vs_str;
 mod testing_with_stdout;
+mod automated_testing;
 
 fn main() {
     println!("Rust (personal) Recipes gleaned from my own learnings");
@@ -18,4 +19,7 @@ fn main() {
 
     println!("\n--- logging ---\n");
     output_log::main();
+
+    println!("\n--- automated testing ---\n");
+    automated_testing::main();
 }

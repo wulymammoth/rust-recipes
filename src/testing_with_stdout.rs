@@ -1,3 +1,4 @@
+/// https://andrewra.dev/2019/08/05/testing-in-rust-writing-to-stdout/
 use std::io::Write;
 
 #[allow(dead_code)]

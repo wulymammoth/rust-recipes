@@ -1,5 +1,17 @@
 #[allow(unused_variables)]
 pub fn main() {
+    // - str -> [char] | doesn't have a size; just a collection or sequence of characters and doesn't
+    // know how long that sequence is
+    //
+    // - &str -> &[char] | fat pointer (not narrow) and stores a pointer to both the start of the
+    // slice and the length of the slice; thing that remembers both where the string starts and how
+    // long it is
+    //
+    // - String -> Vec<char> | heap-allocated and may shrink or grow. With a string we can get a
+    // reference to a str (&str)
+    //   - going from String to &str is cheap (`AsRef`)
+    //   - going from &str to String is expensive as we need to do a new heap allocation and
+    //   copy/memory copy
     let string_slice: &str = "howdy";
     let string: String = String::from("heyhey");
 
